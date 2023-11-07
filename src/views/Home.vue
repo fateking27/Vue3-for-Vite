@@ -30,7 +30,6 @@ const isShow_ = () => {
   isAction.value = !isAction.value
 }
 
-
 </script>
 
 <style lang="scss" scoped>
@@ -38,7 +37,6 @@ const isShow_ = () => {
   padding: 0;
   margin: 0;
 }
-
 
 .actionWidth{
   width: 65px;
