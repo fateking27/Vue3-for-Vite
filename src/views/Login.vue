@@ -1,5 +1,6 @@
 <template>
   <el-card class="box-card">
+    <button @click="changeLanguoge">切换英文</button>
     <div class="heard">
       <el-image
         class="logo"
@@ -7,7 +8,7 @@
         src="http://xawn.x3322.net:8002/distremote/static/img/logo.png"
       >
       </el-image>
-      <h1>赤兔养车</h1>
+      <h1>{{$t("login.title")}}</h1>
     </div>
 
     <el-form
@@ -18,12 +19,12 @@
       label-width="70px"
       class="demo-ruleForm"
     >
-      <el-form-item label="用户名：" prop="name">
+      <el-form-item :label="$t('login.name')" prop="name">
         <div></div>
         <el-input v-model="ruleForm.name" type="text" autocomplete="off" />
       </el-form-item>
 
-      <el-form-item label="密码：" prop="password">
+      <el-form-item :label="$t('login.password')" prop="password">
         <div></div>
         <el-input
           v-model="ruleForm.password"
@@ -34,17 +35,22 @@
 
       <el-form-item>
         <el-button class="login" type="primary" @click="login(ruleForm)"
-          >登录</el-button
+          >{{ $t("login.onlogin") }}</el-button
         >
       </el-form-item>
     </el-form>
-    <router-link to="/joinBusiness">商家入驻</router-link>
+    <router-link to="/joinBusiness">{{$t("login.register")}}</router-link>
   </el-card>
 </template>
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
 import type { FormInstance } from "element-plus";
+import {useI18n} from "vue-i18n"
+const {t,locale} = useI18n()
+const changeLanguoge = ()=>{
+  locale.value = "en" 
+}
 
 const $router = useRouter();
 
