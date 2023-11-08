@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 
+
 export const userStore = defineStore("userStore", {
   state: () => {
     return {
-      username: "fateking",
-      users: [],
+      username: "",
+      userMenus: [],
     };
   },
   getters: {
@@ -17,9 +18,6 @@ export const userStore = defineStore("userStore", {
   },
   actions: {
     changeUserName(val: string) {
-      this.username = val;
-    },
-    async asyncChangeUserName(val: string) {
       this.username = val;
     },
   },

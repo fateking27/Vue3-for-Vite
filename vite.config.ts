@@ -41,19 +41,19 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         }
       }
     },
-    // server:{
-    //   port: Number(env.VITE_APP_PORT),
-    //   open:true,
-    //   //开启代理服务器 http://127.0.0.1:5173/users/getAccountList2
-    //   //访问路径：http://127.0.0.1:5173/apis/users/getAccountList2
-    //   proxy:{
-    //     [env.VITE_APP_BASE_URL]:{
-    //       target:env.VITE_APP_SERVER_PATH,
-    //       changeOrigin:true,
-    //       rewrite:path=>path.replace(new RegExp("^"+env.VITE_APP_BASE_URL),"")
-    //     }
-    //   }
-    // }
+    server:{
+      port: Number(env.VITE_APP_PORT),
+      open:true,
+      //开启代理服务器 http://127.0.0.1:5173/users/getAccountList2
+      //访问路径：http://127.0.0.1:5173/apis/users/getAccountList2
+      proxy:{
+        [env.VITE_APP_BASE_URL]:{
+          target:env.VITE_APP_SERVER_PATH,
+          changeOrigin:true,
+          rewrite:path=>path.replace(new RegExp("^"+env.VITE_APP_BASE_URL),"")
+        }
+      }
+    }
   }
 })
 

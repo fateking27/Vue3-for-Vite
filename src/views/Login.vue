@@ -8,7 +8,7 @@
         src="http://xawn.x3322.net:8002/distremote/static/img/logo.png"
       >
       </el-image>
-      <h1>{{$t("login.title")}}</h1>
+      <h1>{{ $t("login.title") }}</h1>
     </div>
 
     <el-form
@@ -21,7 +21,7 @@
     >
       <el-form-item :label="$t('login.name')" prop="name">
         <div></div>
-        <el-input v-model="ruleForm.name" type="text" autocomplete="off" />
+        <el-input v-model="ruleForm.username" type="text" autocomplete="off" />
       </el-form-item>
 
       <el-form-item :label="$t('login.password')" prop="password">
@@ -34,39 +34,60 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button class="login" type="primary" @click="login(ruleForm)"
-          >{{ $t("login.onlogin") }}</el-button
-        >
+        <el-button class="login" type="primary" @click="login">{{
+          $t("login.onlogin")
+        }}</el-button>
       </el-form-item>
     </el-form>
-    <router-link to="/joinBusiness">{{$t("login.register")}}</router-link>
+    <router-link to="/joinBusiness">{{ $t("login.register") }}</router-link>
   </el-card>
 </template>
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 import type { FormInstance } from "element-plus";
-import {useI18n} from "vue-i18n"
-const {t,locale} = useI18n()
-const changeLanguoge = ()=>{
-  locale.value = "en" 
-}
+import { useI18n } from "vue-i18n";
+import { findAllUser } from "@/apis/userApi";
+// import {userStore} from "@/store/userStore"
+// const userStoreData = userStore()
 
-const $router = useRouter();
 
+
+const { locale } = useI18n();
+const changeLanguoge = () => {
+  locale.value = "en";
+};
+
+const router = useRouter();
 
 const ruleFormRef = ref<FormInstance>();
 
 const ruleForm: any = reactive({
-  name: "",
-  password: "",
+  username: "bobo",
+  password: "1234qwer",
 });
 
-const login = (form: any) => {
-  if (!form) return;
-  
-  $router.push("/home");
-  console.log(form.name,form.password);
+//登录
+const login = async () => {
+  const res = await findAllUser(ruleForm);
+  // localStorage.user = JSON.stringify(res.data.user)
+  // localStorage.permissions = JSON.stringify(res.data.permissions)
+  if (res.status == 200) {
+    localStorage.setItem("token", res.data.data.token);
+    ElMessage({
+      message: res.data.message,
+      type: "success",
+    });
+    localStorage.setItem ('username', res.data.data.user.username)
+    router.push("/home");
+    console.log(res);
+  } else {
+    ElMessage({
+      message: "认证失败！",
+      type: "warning",
+    });
+  }
 };
 </script>
 

@@ -13,7 +13,7 @@ import { withDirectives } from 'vue';
         @open="handleOpen"
         @close="handleClose"
         style="border: none"
-        :router='true'
+        :router="true"
       >
         <div style="margin-left: 15px; padding-top: 10px">
           <el-image
@@ -24,41 +24,21 @@ import { withDirectives } from 'vue';
             >赤兔养车</span
           >
         </div>
-
-        <el-menu-item index="/home">
-          <el-icon><location /></el-icon>
-          <span>系统主页</span>
-        </el-menu-item>
-
-        <el-sub-menu index="2">
-          <template #title>
-            <el-icon><icon-menu /></el-icon>
-            <span>系统管理</span>
-          </template>
-          <el-menu-item-group>
-            <el-menu-item index="/home/user">用户管理</el-menu-item>
-            <el-menu-item index="4-2">item two</el-menu-item>
-          </el-menu-item-group>
-        </el-sub-menu>
-
-        <el-menu-item index="3">
-          <el-icon><setting /></el-icon>
-          <span>系统监控</span>
-        </el-menu-item>
-
-        <el-sub-menu index="4">
-          <template #title>
+        <template v-for="item in menus">
+          <el-menu-item v-if="!item.children" :index="item.path">
             <el-icon><location /></el-icon>
-            <span>订单管理</span>
-          </template>
-          <el-menu-item-group title="Group One">
-            <el-menu-item index="4-1">item one</el-menu-item>
-            <el-menu-item index="4-2">item two</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="4-3">item three</el-menu-item>
-          </el-menu-item-group>
-        </el-sub-menu>
+            <span>{{ item.name }}</span>
+          </el-menu-item>
+          <el-sub-menu v-else :index="item.path">
+            <template #title>
+              <el-icon><icon-menu /></el-icon>
+              <span>{{ item.name }}</span>
+            </template>
+            <el-menu-item v-for="item2 in item.children" :index="item2.path">{{
+              item2.name
+            }}</el-menu-item>
+          </el-sub-menu>
+        </template>
       </el-menu>
     </el-col>
   </el-row>
@@ -67,7 +47,25 @@ import { withDirectives } from 'vue';
 <script lang="ts" setup>
 import { ref } from "vue";
 import { Menu as IconMenu, Location, Setting } from "@element-plus/icons-vue";
+import { userStore } from "@/store/userStore";
+import { getMenus } from "@/apis/userApi";
+
+const menus = ref([]);
 const status = ref<boolean>(false);
+const userStoreData = userStore();
+
+//获取侧边栏菜单
+const getMenu = async () => {
+  let username = localStorage.username;
+  const res = await getMenus(username);
+  localStorage.setItem("userMenus",JSON.stringify(res.data[0].children))
+
+  userStoreData.userMenus = res.data[0].children;
+  menus.value = userStoreData.userMenus;
+
+  console.log(menus.value);
+};
+getMenu();
 
 const isShow = () => {
   status.value = !status.value;

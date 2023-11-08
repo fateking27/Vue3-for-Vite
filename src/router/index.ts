@@ -5,7 +5,11 @@ import RegisterVue from "@/views/Register.vue";
 import UserVue from "@/components/User/User.vue";
 import JoinBusinessVue from "@/views/JoinBusiness.vue";
 
-const routes:Array<RouteRecordRaw> = [
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: "/home",
+    component: HomeVue,
+  },
   {
     path: "/login",
     component: LoginVue,
@@ -19,14 +23,14 @@ const routes:Array<RouteRecordRaw> = [
     component: JoinBusinessVue,
   },
   {
-    path: "/home",
+    path: "/system",
     component: HomeVue,
-    children:[
+    children: [
       {
-        path:'user',
+        path: "user",
         component: UserVue,
-      }
-    ]
+      },
+    ],
   },
 ];
 
