@@ -4,11 +4,19 @@ interface UserItem {
   username: string;
   password?: string;
 }
+interface getAllUsers {
+  pageSize: string;
+  pageNum: string;
+}
 
 export const findAllUser = (data: UserItem) => {
   return axios.post("/login", data);
 };
 
 export const getMenus = (username: string) => {
-  return axios.get("/menu/"+ username);
+  return axios.get("/menu/" + username);
+};
+
+export const getAllUsers = (data?: any) => {
+  return axios.get("/user",{ params: data });
 };

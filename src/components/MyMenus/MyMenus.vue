@@ -1,4 +1,3 @@
-import { withDirectives } from 'vue';
 <template>
   <el-row class="tac">
     <el-col>
@@ -24,7 +23,8 @@ import { withDirectives } from 'vue';
             >赤兔养车</span
           >
         </div>
-        <template v-for="item in menus">
+
+        <template v-for="item in userStoreData.userMenus">
           <el-menu-item v-if="!item.children" :index="item.path">
             <el-icon><location /></el-icon>
             <span>{{ item.name }}</span>
@@ -39,6 +39,7 @@ import { withDirectives } from 'vue';
             }}</el-menu-item>
           </el-sub-menu>
         </template>
+        
       </el-menu>
     </el-col>
   </el-row>
@@ -46,24 +47,23 @@ import { withDirectives } from 'vue';
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { Menu as IconMenu, Location, Setting } from "@element-plus/icons-vue";
+import { Menu as IconMenu, Location } from "@element-plus/icons-vue";
 import { userStore } from "@/store/userStore";
 import { getMenus } from "@/apis/userApi";
 
-const menus = ref([]);
+// const menus = ref([]);
 const status = ref<boolean>(false);
 const userStoreData = userStore();
 
 //获取侧边栏菜单
 const getMenu = async () => {
-  let username = localStorage.username;
-  const res = await getMenus(username);
-  localStorage.setItem("userMenus",JSON.stringify(res.data[0].children))
+  // let username = localStorage.username;
 
+  const res = await getMenus(userStoreData.username);
   userStoreData.userMenus = res.data[0].children;
-  menus.value = userStoreData.userMenus;
+  // menus.value = userStoreData.userMenus;
 
-  console.log(menus.value);
+  console.log(userStoreData.userMenus);
 };
 getMenu();
 

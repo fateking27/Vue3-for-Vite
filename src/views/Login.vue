@@ -49,8 +49,8 @@ import { ElMessage } from "element-plus";
 import type { FormInstance } from "element-plus";
 import { useI18n } from "vue-i18n";
 import { findAllUser } from "@/apis/userApi";
-// import {userStore} from "@/store/userStore"
-// const userStoreData = userStore()
+import {userStore} from "@/store/userStore"
+const userStoreData = userStore()
 
 
 
@@ -79,6 +79,7 @@ const login = async () => {
       message: res.data.message,
       type: "success",
     });
+    userStoreData.username = res.data.data.user.username
     localStorage.setItem ('username', res.data.data.user.username)
     router.push("/home");
     console.log(res);
