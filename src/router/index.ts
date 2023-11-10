@@ -5,6 +5,7 @@ import HomeVue from "@/views/Home.vue";
 import RegisterVue from "@/views/Register.vue";
 import UserVue from "@/components/User/User.vue";
 import JoinBusinessVue from "@/views/JoinBusiness.vue";
+import RoleVue from "@/components/Role/Role.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +31,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/system/user",
         component: UserVue,
+      },
+      {
+        path: "/system/role",
+        component: RoleVue,
       },
     ],
   },

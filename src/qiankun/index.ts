@@ -1,7 +1,14 @@
 /**
  * apps里面存放的就是子应用
  */
-const apps: any = [];
+const apps: any = [
+  {
+    name: "ReactApp",
+    entry: "//localhost:8000",
+    container: "#container",
+    activeRule: "/react",
+  },
+];
 import {
   registerMicroApps,
   addGlobalUncaughtErrorHandler,

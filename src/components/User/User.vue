@@ -27,9 +27,7 @@
         </div>
 
         <div style="width: 300px; padding-top: 20px">
-          <el-button @click="drawer2 = true" type="primary" plain
-            >新增</el-button
-          >
+          <el-button @click="isShow_" type="primary" plain>新增</el-button>
           <el-button>删除</el-button>
           <el-button @click="exportExcel(columns, state.tableData)"
             >导出Excel</el-button
@@ -79,7 +77,9 @@
               font-size: 18px;
             "
           >
-            <el-icon color="#409EFC"><Setting /></el-icon>
+            <el-icon color="#409EFC" @click="isShow_(scope.row)"
+              ><Setting
+            /></el-icon>
             <el-icon color="#409EFC" @click="view(scope.row)"><View /></el-icon>
           </div>
         </template>
@@ -163,27 +163,8 @@
     </div>
   </el-dialog>
 
-  <el-drawer v-model="drawer2" :direction="direction">
-    <template #header>
-      <h4>set title by slot</h4>
-    </template>
-    <template #default>
-      <div>
-        <el-radio v-model="radio1" label="Option 1" size="large"
-          >Option 1</el-radio
-        >
-        <el-radio v-model="radio1" label="Option 2" size="large"
-          >Option 2</el-radio
-        >
-      </div>
-    </template>
-    <template #footer>
-      <div style="flex: auto">
-        <el-button @click="cancelClick">cancel</el-button>
-        <el-button type="primary" @click="confirmClick">confirm</el-button>
-      </div>
-    </template>
-  </el-drawer>
+  <UserAdd ref="RefChild"></UserAdd>
+  
 </template>
 
 <script lang="ts" setup>
@@ -191,24 +172,20 @@ import { Setting, View, Search } from "@element-plus/icons-vue";
 import { ElTable } from "element-plus";
 import { getAllUsers } from "@/apis/userApi";
 import { exportExcel } from "@/utils/excel";
-import { ElMessageBox } from "element-plus";
 
-const drawer2 = ref(false);
-const direction = ref("rtl");
-const radio1 = ref("Option 1");
-
-function cancelClick() {
-  drawer2.value = false;
-}
-function confirmClick() {
-  ElMessageBox.confirm(`Are you confirm to chose ${radio1.value} ?`)
-    .then(() => {
-      drawer2.value = false;
-    })
-    .catch(() => {
-      // catch error
-    });
-}
+const RefChild = ref();
+const isShow_ = async (data: any) => {
+  if (data.username) {
+    //调用子组件方法
+    RefChild.value.userData.username = data.username;
+    //异步调用子组件方法
+    await RefChild.value.getuserMsg({ username: data.username });
+    RefChild.value.drawer2 = true;
+  } else {
+    //调用子组件方法
+    RefChild.value.drawer2 = true;
+  }
+};
 
 interface User {
   date: string;
