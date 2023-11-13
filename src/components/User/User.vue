@@ -110,23 +110,33 @@
   >
     <div class="content" style="display: flex; justify-content: space-around">
       <div class="image">
-        <el-image style="width: 100px; height: 100px" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="
+            'http://xawn.x3322.net:8002/distremote/static/avatar/' +
+            userMsg.avatar
+          "
+        ></el-image>
       </div>
       <div class="msg m1">
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
+          <el-icon><User /></el-icon>
           <span>账户：{{ userMsg.username }}</span>
         </div>
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
-          <span>部门：{{ userMsg.deptName }}</span>
+          <el-icon><House /></el-icon>
+          <span
+            >部门：{{
+              userMsg.deptName ? userMsg.deptName : "暂无部门信息"
+            }}</span
+          >
         </div>
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
+          <el-icon><Star /></el-icon>
           <span>角色：{{ userMsg.roleName }}</span>
         </div>
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
+          <el-icon><Male /></el-icon>
           <span
             >性别：{{
               userMsg.ssex == "0" ? "男" : userMsg.ssex == "2" ? "保密" : "女"
@@ -134,40 +144,56 @@
           >
         </div>
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
+          <el-icon><Message /></el-icon>
           <span>邮箱：{{ userMsg.email }}</span>
         </div>
+      </div>
+      <div class="msg m2">
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
+          <el-icon><Phone /></el-icon>
+          <span>电话：{{ userMsg.mobile }}</span>
+        </div>
+        <div>
+          <el-icon><Orange /></el-icon>
           <span
             >状态： <el-tag v-if="userMsg.status !== '0'">有效</el-tag>
             <el-tag v-else type="danger">锁定</el-tag></span
           >
         </div>
-      </div>
-      <div class="msg m2">
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
-          <span>账户：mmm</span>
+          <el-icon><Clock /></el-icon>
+          <span>创建时间：{{ userMsg.createTime }}</span>
         </div>
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
-          <span>电话：{{ userMsg.mobile }}</span>
+          <el-icon><Clock /></el-icon>
+          <span>最近登录：{{ userMsg.lastLoginTime }}</span>
         </div>
         <div>
-          <el-icon color="#409EFC"><Setting /></el-icon>
-          <span>账户：mmm</span>
+          <el-icon><ChatDotRound /></el-icon>
+          <span>描述：{{ userMsg.description }}</span>
         </div>
       </div>
     </div>
   </el-dialog>
 
   <UserAdd ref="RefChild" @getUser="getUsers"></UserAdd>
-  
 </template>
 
 <script lang="ts" setup>
-import { Setting, View, Search } from "@element-plus/icons-vue";
+import {
+  Setting,
+  View,
+  Search,
+  User,
+  Star,
+  Male,
+  Phone,
+  Clock,
+  ChatDotRound,
+  Message,
+  House,
+  Orange,
+} from "@element-plus/icons-vue";
 import { ElTable } from "element-plus";
 import { getAllUsers } from "@/apis/userApi";
 import { exportExcel } from "@/utils/excel";
@@ -175,7 +201,7 @@ import { exportExcel } from "@/utils/excel";
 const RefChild = ref();
 const isShow_ = async (data: any) => {
   if (data.username) {
-    RefChild.value.title = '修改用户'
+    RefChild.value.title = "修改用户";
     //调用子组件方法
     RefChild.value.userData.username = data.username;
     //异步调用子组件方法
@@ -184,7 +210,7 @@ const isShow_ = async (data: any) => {
   } else {
     //调用子组件方法
     RefChild.value.drawer2 = true;
-    RefChild.value.title = '新增用户'
+    RefChild.value.title = "新增用户";
   }
 };
 
@@ -302,6 +328,17 @@ const handleCurrentChange = (val: number) => {
 </script>
 
 <style scoped>
+.msg {
+  /* background-color: aqua; */
+  > div {
+    padding: 5px 0;
+    display: flex;
+  }
+  .el-icon {
+    padding-right: 10px;
+    font-size: 18px;
+  }
+}
 .dialog-footer button:first-child {
   margin-right: 10px;
 }

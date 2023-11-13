@@ -49,10 +49,8 @@ import { ElMessage } from "element-plus";
 import type { FormInstance } from "element-plus";
 import { useI18n } from "vue-i18n";
 import { findAllUser } from "@/apis/userApi";
-import {userStore} from "@/store/userStore"
-const userStoreData = userStore()
-
-
+import { userStore } from "@/store/userStore";
+const userStoreData = userStore();
 
 const { locale } = useI18n();
 const changeLanguoge = () => {
@@ -79,9 +77,16 @@ const login = async () => {
       message: res.data.message,
       type: "success",
     });
-    userStoreData.username = res.data.data.user.username
-    userStoreData.userId = res.data.data.user.userId
-    localStorage.setItem ('username', res.data.data.user.username)
+    userStoreData.username = res.data.data.user.username;
+    userStoreData.userId = res.data.data.user.userId;
+    localStorage.setItem("username", res.data.data.user.username);
+    const { config, exipreTime, permissions, roles, token, user } = res.data.data;
+    localStorage.config = JSON.stringify(config);
+    localStorage.exipreTime = exipreTime;
+    localStorage.permissions = JSON.stringify(permissions);
+    localStorage.roles = JSON.stringify(roles);
+    localStorage.token = token;
+    localStorage.user = JSON.stringify(user);
     router.push("/home");
     console.log(res);
   } else {

@@ -7,6 +7,8 @@ import {createPinia} from "pinia"
 import i18n from "@/lang"
 import piniaPersist from 'pinia-plugin-persist'
 import startQuankun from "./qiankun"
+import VueEcharts from 'vue-echarts'
+import 'echarts'
 
 const pinia = createPinia()
 pinia.use(piniaPersist)
@@ -17,6 +19,7 @@ app.use(ElementPlus);
 app.use(router);
 app.use(pinia)
 app.use(i18n)
+app.component('ECharts', VueEcharts)
 app.mount("#app");
 
 startQuankun()
