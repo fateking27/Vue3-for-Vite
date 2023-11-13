@@ -4,6 +4,7 @@ export const userStore = defineStore("userStore", {
   state: () => {
     return {
       username: "",
+      userId: "",
       userMenus: [],
     };
   },

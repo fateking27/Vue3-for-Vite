@@ -110,8 +110,7 @@
   >
     <div class="content" style="display: flex; justify-content: space-around">
       <div class="image">
-        <el-icon color="#409EFC"><Setting /></el-icon>
-        <span>账户：mmm</span>
+        <el-image style="width: 100px; height: 100px" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-image>
       </div>
       <div class="msg m1">
         <div>
@@ -163,7 +162,7 @@
     </div>
   </el-dialog>
 
-  <UserAdd ref="RefChild"></UserAdd>
+  <UserAdd ref="RefChild" @getUser="getUsers"></UserAdd>
   
 </template>
 
@@ -176,6 +175,7 @@ import { exportExcel } from "@/utils/excel";
 const RefChild = ref();
 const isShow_ = async (data: any) => {
   if (data.username) {
+    RefChild.value.title = '修改用户'
     //调用子组件方法
     RefChild.value.userData.username = data.username;
     //异步调用子组件方法
@@ -184,6 +184,7 @@ const isShow_ = async (data: any) => {
   } else {
     //调用子组件方法
     RefChild.value.drawer2 = true;
+    RefChild.value.title = '新增用户'
   }
 };
 

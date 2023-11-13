@@ -30,5 +30,6 @@ export const AddUsers = (data: any) => {
 };
 
 export const EditUsers = (data: any) => {
-  return axios.put("/user", data);
+  console.log(data)
+  return axios.put("/user", data );
 };

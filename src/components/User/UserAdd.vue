@@ -1,7 +1,7 @@
 <template>
   <el-drawer v-model="drawer2" :direction="direction" size="600">
     <template #header>
-      <h4>新增用户</h4>
+      <h4>{{ title }}</h4>
     </template>
     <template #default>
       <el-form
@@ -65,7 +65,7 @@
     <template #footer>
       <div style="flex: auto">
         <el-button @click="cancelClick(ruleFormRef)">取消</el-button>
-        <el-button type="primary" @click="addUser(ruleFormRef, form)"
+        <el-button type="primary" @click="AddOrEdit(ruleFormRef, form)"
           >提交</el-button
         >
       </div>
@@ -75,6 +75,7 @@
 
 <script lang="ts" setup>
 import type { FormInstance, FormRules } from "element-plus";
+import { ElMessage } from "element-plus";
 import { getDept, AddUsers, getAllUsers, EditUsers } from "@/apis/userApi";
 import { getRoles } from "@/apis/roleApi";
 
@@ -83,22 +84,27 @@ const userData = ref({ username: "" });
 const direction = ref("rtl");
 const ruleFormRef = ref<FormInstance>();
 
-let form = reactive({
+const form = ref({
   username: "vGundam",
   password: "1234qwer",
-  roleId: [1],
+  roleId: [],
   status: "1",
   ssex: "2",
   email: "xxx@gmail.com",
   mobile: "13425672348",
   deptId: "1",
+  userId: "",
 });
+
+let title = ref("新增用户");
+
+const myEmit = defineEmits(["getUser"]);
 
 const getuserMsg = async (user: any) => {
   // if (!user.username) {
   const res = await getAllUsers(user);
-  console.log(user);
-  form = {
+  console.log(res.data.rows[0]);
+  form.value = {
     username: res.data.rows[0].username,
     password: "1234qwer",
     roleId: res.data.rows[0].roleId?.split(",").map((num: any) => Number(num)),
@@ -106,7 +112,8 @@ const getuserMsg = async (user: any) => {
     ssex: res.data.rows[0].ssex,
     email: res.data.rows[0].email,
     mobile: res.data.rows[0].mobile,
-    deptId: res.data.rows[0].deptId?.toString(),
+    deptId: String(res.data.rows[0].deptId),
+    userId: res.data.rows[0].userId.toString(),
   };
   // }
 };
@@ -141,7 +148,7 @@ onMounted(() => {
 
 const depts = async () => {
   const res = await getDept();
-  // console.log(res);
+  console.log(res);
   depts_.value = res.data.rows.children;
   // console.log(depts_.value);
 };
@@ -156,7 +163,10 @@ const addUser = async (formEl: FormInstance | undefined, form: any) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       // console.log("submit!", form.roleId.toString());
-      const res = AddUsers({ ...form, roleId: form.roleId.toString() });
+      const res = AddUsers({
+        ...form,
+        roleId: form.roleId.toString(),
+      });
       console.log(res);
 
       formEl.clearValidate();
@@ -181,11 +191,31 @@ const editUser = async (formEl: FormInstance | undefined, form: any) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       // console.log("submit!", form.roleId.toString());
-      const res = EditUsers({ ...form, roleId: form.roleId.toString() });
-      console.log(res);
+      EditUsers({
+        ...form,
+        roleId: form.roleId.toString(),
+      }).then((res) => {
+        if (res.status == 200) {
+          //调用父组件方法
+          myEmit("getUser");
+
+          ElMessage({
+            message: "用户修改成功",
+            type: "success",
+          });
+        } else {
+          ElMessage({
+            message: "用户修改失败",
+            type: "warning",
+          });
+        }
+
+        console.log(res);
+      });
 
       formEl.clearValidate();
-      form = {
+
+      form.value = {
         username: "",
         password: "1234qwer",
         roleId: [],
@@ -202,9 +232,17 @@ const editUser = async (formEl: FormInstance | undefined, form: any) => {
   });
 };
 
+const AddOrEdit = (ruleFormRef: FormInstance | undefined, form: any) => {
+  if (title.value == "新增用户") {
+    addUser(ruleFormRef, form);
+  } else if (title.value == "修改用户") {
+    editUser(ruleFormRef, form);
+  }
+};
+
 function cancelClick(formEl: FormInstance | undefined) {
   formEl.clearValidate();
-  form = {
+  form.value = {
     username: "",
     password: "1234qwer",
     roleId: [],
@@ -213,6 +251,7 @@ function cancelClick(formEl: FormInstance | undefined) {
     email: "",
     mobile: "",
     deptId: "",
+    userId: "",
   };
   drawer2.value = false;
 }
@@ -225,6 +264,7 @@ defineExpose({
   userData,
   form,
   getuserMsg,
+  title,
 });
 </script>
 

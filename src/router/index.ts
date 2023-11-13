@@ -6,6 +6,7 @@ import RegisterVue from "@/views/Register.vue";
 import UserVue from "@/components/User/User.vue";
 import JoinBusinessVue from "@/views/JoinBusiness.vue";
 import RoleVue from "@/components/Role/Role.vue";
+import MenuVue from "@/components/Menu/Menu.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -35,6 +36,10 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "/system/role",
         component: RoleVue,
+      },
+      {
+        path: "/system/menu",
+        component: MenuVue,
       },
     ],
   },

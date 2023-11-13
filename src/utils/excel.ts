@@ -22,5 +22,5 @@ export const exportExcel = (columns: any, tableData: any) => {
 
     const workbook = xlsx.utils.book_new()
     xlsx.utils.book_append_sheet(workbook, worksheet, '表一');
-    xlsx.writeFile(workbook, '用户信息表.xlsx');
+    xlsx.writeFile(workbook, 'excel表格.xlsx');
 }

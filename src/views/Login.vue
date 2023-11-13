@@ -80,6 +80,7 @@ const login = async () => {
       type: "success",
     });
     userStoreData.username = res.data.data.user.username
+    userStoreData.userId = res.data.data.user.userId
     localStorage.setItem ('username', res.data.data.user.username)
     router.push("/home");
     console.log(res);
