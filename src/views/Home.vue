@@ -206,14 +206,14 @@ function getRecentlySevenDays() {
 }
 .countainer {
   width: 100%;
-  height: 100vh;
+  height: 75vh;
   // background-color: aqua;
   // border: 1px solid #ccc;
 
   .header {
     width: 95%;
     margin: 0 auto;
-    height: 200px;
+    height: 150px;
     // background-color: pink;
     margin-top: 15px;
     display: flex;
@@ -269,7 +269,7 @@ function getRecentlySevenDays() {
     margin: 0 auto;
     margin-top: 15px;
     // background-color: pink;
-    height: 360px;
+    height: 320px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -300,7 +300,7 @@ function getRecentlySevenDays() {
         tr {
           height: 25%;
 
-          border: 1px solid #ccc;
+          // border: 1px solid #ccc;
 
           td {
             width: 50%;
@@ -317,7 +317,7 @@ function getRecentlySevenDays() {
           width: 200%;
           height: 100%;
           display: flex;
-          justify-content: space-between;
+          justify-content: space-around;
 
           p {
             width: 100%;
